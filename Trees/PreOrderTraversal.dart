@@ -1,5 +1,8 @@
 import 'treenode.dart';
 
+
+// PreOrder Transversal Recursive MEthod..
+
 class PreOrderTransversal {
   static List<int> preorderTransversal(TreeNode<int>? root) {
     
@@ -15,10 +18,14 @@ class PreOrderTransversal {
     
     // Transverse from the root to left leaf null then 
     res.add(root.data);
+    // transverse the left side of tree
     preorder(root.left, res);
+    // transverse the right side 
     preorder(root.right, res);
   }
 }
+
+// PreOrder Transversal Iterative MEthod..
 
 class PreOrderTransversalIterative {
 
