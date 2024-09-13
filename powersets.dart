@@ -75,6 +75,6 @@ class PowersetsIterativeWithDup {
       
     }
 
-  `return powersets;`
+    return powersets;
   }
 }
