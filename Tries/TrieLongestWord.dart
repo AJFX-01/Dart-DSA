@@ -33,7 +33,7 @@ class Solution {
 
     if (node == null) return;
 
-    if (node?.word != null) {
+    if (node.word != null) {
         if (node.word.length > result.length) {
           result = node.word;
         } else if (node.word.length == result.length && node.word.compareTo(result) < 0) {
