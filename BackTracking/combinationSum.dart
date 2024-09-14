@@ -53,12 +53,15 @@ class CombinationSumBFS {
         }
 
         int newTarget = currentTarget - candidate;
+        if (newTarget >= 0) {
+          List<int> newCombination = List.from(currentCombination)
+            ..add(candidate);
 
-        List<int> newCombination = List.from(currentCombination)
-          ..add(candidate);
-
-        queue.add(MapEntry(newCombination, newTarget));
+          queue.add(MapEntry(newCombination, newTarget));
+        }
       }
     }
+
+    return combinations;
   }
 }
