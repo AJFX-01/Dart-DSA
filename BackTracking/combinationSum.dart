@@ -1,17 +1,17 @@
+import 'dart:collection';
+import 'dart:js_interop';
+
 class CombinationSum {
-  List<List<int>> combinations= [];
+  List<List<int>> combinations = [];
   List<int> combination = [];
 
   List<List<int>> combinationSum(List<int> candidates, int target) {
     backtrack(candidates, 0, target);
     return combinations;
-
   }
 
-
   void backtrack(List<int> candidates, int start, int target) {
-    
-    if (target <  0) return;
+    if (target < 0) return;
 
     if (target == 0) {
       combinations.add(List.from(combination));
@@ -21,6 +21,44 @@ class CombinationSum {
       combination.add(candidates[i]);
       backtrack(candidates, i, target - candidates[i]);
       combination.removeLast();
+    }
+  }
+}
+
+class CombinationSumBFS {
+  List<List<int>> combinationSum(List<int> candidates, int target) {
+    List<List<int>> combinations = [];
+    Queue<MapEntry<List<int>, int>> queue = Queue();
+
+    // // Initialize the queue with an empty combination and the target
+    queue.add(MapEntry([], target));
+
+    while (queue.isNotEmpty) {
+      MapEntry<List<int>, int> current = queue.removeFirst();
+      List<int> currentCombination = current.key;
+
+      int currentTarget = current.value;
+
+      // If the current target is zero, add the combination to the result
+      if (currentTarget == 0) {
+        combinations.add(currentCombination);
+        continue;
+      }
+
+      //explore further
+      for (int candidate in candidates) {
+        if (currentCombination.isNotEmpty &&
+            candidate < currentCombination.last) {
+          continue;
+        }
+
+        int newTarget = currentTarget - candidate;
+
+        List<int> newCombination = List.from(currentCombination)
+          ..add(candidate);
+
+        queue.add(MapEntry(newCombination, newTarget));
+      }
     }
   }
 }
