@@ -70,11 +70,35 @@ class CombinationSumWithDups {
   List<List<int>> combinationSum(List<int> candidates, int target) {
     List<List<int>> combinations = [];
     List<int> combination = [];
-    
+
     // Sort the candidates in ascending order for efficient use of binary search
     candidates.sort();
 
-    backtrack(candidates, 0, target, combinations, combination);
+    void backtrack(int start) {
+      if (target < 0) {
+        return;
+      }
+
+      if (target == 0) {
+        combinations.add(List.from(combination));
+      }
+
+      for (int i = start; i < candidates.length; i++) {
+        // skip duplicates
+        if (i > start &&
+            i < candidates.length &&
+            candidates[i] == candidates[i - 1]) {
+          return;
+        }
+
+        combination.add(candidates[i]);
+        backtrack(i + 1 // start from the next unique element
+            );
+          combination.removeLast();
+      }
+    }
+
+    backtrack(0);
     return combinations;
   }
 }
