@@ -65,3 +65,16 @@ class CombinationSumBFS {
     return combinations;
   }
 }
+
+class CombinationSumWithDups {
+  List<List<int>> combinationSum(List<int> candidates, int target) {
+    List<List<int>> combinations = [];
+    List<int> combination = [];
+    
+    // Sort the candidates in ascending order for efficient use of binary search
+    candidates.sort();
+
+    backtrack(candidates, 0, target, combinations, combination);
+    return combinations;
+  }
+}
