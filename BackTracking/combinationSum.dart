@@ -93,7 +93,7 @@ class CombinationSumWithDups {
         }
 
         combination.add(candidates[i]);
-        backtrack(candidates, i, target - candidates[i]);
+        backtrack(candidates, i + 1, target - candidates[i]);
           combination.removeLast();
       }
     }
