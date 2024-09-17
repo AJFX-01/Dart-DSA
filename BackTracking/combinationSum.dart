@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'dart:js_interop';
+
 
 class CombinationSum {
   List<List<int>> combinations = [];
@@ -74,13 +74,14 @@ class CombinationSumWithDups {
     // Sort the candidates in ascending order for efficient use of binary search
     candidates.sort();
 
-    void backtrack(int start) {
+    void backtrack(List<int> candidates, int start, int target) {
       if (target < 0) {
         return;
       }
 
       if (target == 0) {
         combinations.add(List.from(combination));
+        
       }
 
       for (int i = start; i < candidates.length; i++) {
@@ -88,17 +89,16 @@ class CombinationSumWithDups {
         if (i > start &&
             i < candidates.length &&
             candidates[i] == candidates[i - 1]) {
-          return;
+          continue;
         }
 
         combination.add(candidates[i]);
-        backtrack(i + 1 // start from the next unique element
-            );
+        backtrack(candidates, i, target - candidates[i]);
           combination.removeLast();
       }
     }
 
-    backtrack(0);
+    backtrack(candidates, 0, target);
     return combinations;
   }
 }
