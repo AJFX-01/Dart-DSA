@@ -49,7 +49,8 @@ class NumberProvinceBFS {
   void bfs(List<List<int>> isConnected, int startCity, List<bool> visited) {
     Queue<int> queue = Queue();
     queue.add(startCity);
-
+    visited[startCity] = true;
+    
     while (queue.isNotEmpty) {
       int city = queue.removeFirst();
       // check all cities connected to current city
