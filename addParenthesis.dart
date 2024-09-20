@@ -9,8 +9,22 @@ class ApplyParenthesis {
 
     for(int i = 0;  i < expression.length; i++) {
 
-      
+      String char = expression[i];
+
+      if (isOperator(char)) {
+        List<int> leftResults = differentWaysToCompute(expression.substring(0, i));
+        List<int> rightResults = differentWaysToCompute(expression.substring(i + 1));
+
+        for(int left in leftResults) {
+          for(int right in rightResults) {
+            results.add(applyOperator(left, right, char));
+          }
+        }
+      }
+
     }
+
+    return results;
 
   }
 
