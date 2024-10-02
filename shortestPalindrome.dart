@@ -1,6 +1,5 @@
 class ShortetstPalindrome {
     
-}
   List<int> computeLPS(String s) {
     int n = s.length;
 
@@ -40,4 +39,5 @@ class ShortetstPalindrome {
     String suffix = s.substring(palLength);
     return suffix.split('').reversed.join('');
   }
+}
 
