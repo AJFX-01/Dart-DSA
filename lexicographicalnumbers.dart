@@ -1,4 +1,4 @@
-class LexicoGraphicalOrderNums {
+ class LexicoGraphicalOrderNums {
   List<int> lexicalOrder(int n) {
     List<int> result = [];
 
