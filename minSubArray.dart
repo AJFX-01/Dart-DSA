@@ -1,6 +1,5 @@
 class Solution {
   int minSubArray(List<int> nums, int p) {
-
     int n = nums.length;
     int totalSum = nums.reduce((value, element) => value + element);
 
@@ -8,11 +7,11 @@ class Solution {
     int target = totalSum % p;
     if (target == 0) return 0;
 
-    Map<int,int> prefixMod = {0: -1}
+    Map<int, int> prefixMod = {0: -1};
     int currentPrefixSum = 0;
     int minLength = n;
 
-    for(int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       currentPrefixSum = (currentPrefixSum + nums[i]) % p;
 
       // find required value that would make currntPrefixSum  equal to taget
