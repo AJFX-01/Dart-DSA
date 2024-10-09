@@ -8,7 +8,7 @@ class Solution {
     int target = totalSum % p;
     if (target == 0) return 0;
 
-    Map<int,int> prefixMod = {0: -1}
+    Map<int,int> prefixMod = {0: -1};
     int currentPrefixSum = 0;
     int minLength = n;
 
