@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+
 // To execute C#, please define "static void Main" on a class
 // named Solution.
 
-class Solutio
-{
-    public class Item {
+class Solution
+{   
+        public class Item {
         public int Width {get; set;}
         public int Height {get; set;}
         public int Value {get; set;}
@@ -56,7 +57,7 @@ class Solutio
             }
         }
 
-        public void Removetem(Item item, int x, int y) {
+        public void RemoveItem(Item item, int x, int y) {
 
             for (int dy =0; dy < item.Height; dy++) {
 
@@ -88,17 +89,102 @@ class Solutio
         private Inventory inventory;
         private List<Item> items;
         private int maxTotalValue = 0;
-        private List
+        private List<(Item, int, int )> bestArrangement = new List<(Item, int, int)>();
+
+        public Optimizer(Inventory inventory, List<Item> items) {
+            this.inventory = inventory;
+            this.items = items;
+        }
+
+
+        public void Optimize () {
+            List<(Item, int, int)> currentArrangement = new List<(Item, int ,int)>();
+            Backtrack(0, 0, 0, currentArrangement);
+
+            DisplayBestArrangement();
+            Console.WriteLine($"Max total value: {maxTotalValue} gold");
+
+        }
+
+        public void Backtrack(int currentValue, int startIndex, int placementCount, List<(Item, int, int)> currentArrangement) {
+            // update current if maxium value
+            if (currentValue > maxTotalValue) {
+                maxTotalValue = currentValue;
+                bestArrangement = new List<(Item, int, int)>(currentArrangement); 
+
+            }
+
+            // Tranverse through the grid
+            for(int y = 0; y < inventory.Height; y++) {
+
+                for (int x = 0; x < inventory.Width; y++) {
+
+                    if (inventory.Grid[y, x] == null) {
+                        foreach(var item in items) {
+                            if (item.Width > inventory.Width || item.Height > inventory.Height) {
+                                continue;
+                            }
+
+                            if (inventory.CanPlace(item, x, y)) {
+                                inventory.PlaceItem(item, x, y);
+                                currentArrangement.Add((item, x, y));
+
+                                // we recursively bactrack 
+                                Backtrack(currentValue + item.Value, startIndex, placementCount + 1, currentArrangement);
+
+                                // we backtrack and remove the item
+                                inventory.RemoveItem(item, x, y);
+                                currentArrangement.RemoveAt(currentArrangement.Count - 1);
+                            }
+                        }
+
+                        return;
+                    }
+                }
+            }
+        }
+
+        public void DisplayBestArrangement () {
+
+            Inventory tempInventory = new Inventory(inventory.Width, inventory.Height);
+
+            foreach (var (item, x, y) in bestArrangement) {
+                tempInventory.PlaceItem(item, x, y);
+            }
+
+            tempInventory.Display();
+            Console.WriteLine("Best Arrangment");
+            foreach (var (item, x, y) in bestArrangement) {
+                Console.WriteLine($"{item.Name} placed at (X : {x}, Y : {y}) - Value: {item.Value} gold");
+            }
+
+            Console.WriteLine();
+        }
+
 
     }
-
-    // Checks for if an items vcan be placed i
-
+    
     static void Main(string[] args)
     {
-        for (var i = 0; i < 5; i++)
-        {
-            Console.WriteLine("Hello, World");
-        }
+        int inventoryWidth = 5;
+            int inventoryHeight = 4;
+            Inventory inventory = new Inventory(inventoryWidth, inventoryHeight);
+
+            // Define items
+            List<Item> items = new List<Item>
+            {
+                new Item("Potion of Potionentiality", 1, 1, 30),
+                new Item("Jeweled Dog Draught Excluder", 3, 1, 150),
+                new Item("Spartan Shield", 2, 2, 300),
+                new Item("Palindromic Sword o’Drows", 1, 3, 120),
+                new Item("Unobsidian Armor", 2, 3, 540),
+                new Item("Wardrobe of Infinite Lions", 20, 10, 1337) // This item is too big and will be ignored
+            };
+
+            // Initialize optimizer
+            Optimizer optimizer = new Optimizer(inventory, items);
+
+            // Run optimization
+            optimizer.Optimize();
     }
 }
