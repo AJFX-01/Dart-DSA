@@ -37,7 +37,7 @@ class Solution
 
             for (int dy = 0; dy < item.Height; dy++) {
 
-                for (int dx = 0; dx < item.Width; dx--) {
+                for (int dx = 0; dx < item.Width; dx++) {
                     if (Grid[y + dy, x + dx] != null) {
                         return false;
                     }
@@ -117,7 +117,7 @@ class Solution
             // Tranverse through the grid
             for(int y = 0; y < inventory.Height; y++) {
 
-                for (int x = 0; x < inventory.Width; y++) {
+                for (int x = 0; x < inventory.Width; x++) {
 
                     if (inventory.Grid[y, x] == null) {
                         foreach(var item in items) {
