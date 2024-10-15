@@ -88,7 +88,58 @@ class Solutio
         private Inventory inventory;
         private List<Item> items;
         private int maxTotalValue = 0;
-        private List
+        private List<(Item, int, int)> bestArrangmnet = new List<(Item. int , int)>();
+        
+        public Optimizer(Inventory inventory, List<Item> items) {
+            this.inventory = inventory;
+            this.items = items;
+        }
+
+        public void Optimize() {
+
+            List<(Item, int int)> currentArrangement = new List<(Item, int, int)>();
+        }
+
+        public void BackTrack(int currentValue, int startIndex, int placementCount, List<(Item, int, int)> currentArrangement) {
+
+            if (currentValue > maxTotalValue) {
+                maxTotalValue = currentValue;
+                bestArrangmnet = new List<(Item, int, int)>(currentArrangement);
+            }
+
+            // Trnaverse throught the grid 
+            for (int y =0; y < Height; y++) {
+                for (int x = 0; x < width; x++) {
+                    // find the first empty spot 
+
+                    if (inventory.Grid{y, x} == null) {
+                        // try plaicing each item in this category
+                        for (var item in item) {
+                            // Prune item too big 
+                            if (item.Width > inventory.Width || item.Height > inventory.Height) {
+                                continue;
+                            }
+
+                            if (inventory.CanPlace(irtem, x,y)) {
+
+                                /// place item 
+                                inventory.PlaceItem(item, x, y);
+                                currentArrangement.Add((item, x, y));
+
+                                // Recursively backtrack through updated value
+                                BackTrack(currentValue + item.Value, startIndex, placementCount + 1, currentArrangement);
+
+                                // Bactrack : remove the item
+                                inventory.RemoveItem(item, x, y);
+                                currentArrangement.RemoveAt(currentArrangement.Count - 1);
+                            }
+                        }
+
+                        return;
+                    }
+                }
+            }
+        }
 
     }
 
@@ -101,4 +152,4 @@ class Solutio
             Console.WriteLine("Hello, World");
         }
     }
-}
+}3333
