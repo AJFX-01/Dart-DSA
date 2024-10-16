@@ -35,6 +35,7 @@ class Solution
 
         return maxLoss;
     }
+    
     static void Main(string[] args)
     {
         List<int> stockPrices1 = new List<int> { 3, 2, 4, 2, 1, 5 };
