@@ -2,121 +2,89 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class Solution
+class Solution
 {
-    public static List<(int strength, decimal start, decimal end)> UnpaintRoadLines(decimal[] coordinates)
+    public static void Main(string[] args)
     {
-        var events = new List<(decimal coord, int delta)>();
-        // Sort events by coordinate and then by delta (to ensure the events with the same coordinate are processed in the same order)
-        for (int i = 0; i < coordinates.Length; i += 2)
-        {
-            //We create a list of events, where each event is a tuple of (coordinate, delta). Delta is 1 for start points and -1 for end points.
-            events.Add((coordinates[i], 1));
-            events.Add((coordinates[i + 1], -1));
-        }
-        events.Sort((a, b) => a.coord.CompareTo(b.coord));
+        // Example usage
+        double[] coords = { 3, 10, 14, 20, 1, 5 };
+        var result = AnalyzePaintLogs(coords);
+        
+        Console.WriteLine($"Result: {FormatResult(result)}");
+    }
 
-        var result = new List<(int strength, decimal start, decimal end)>();
-        var segments = new SortedDictionary<decimal, int>();
-        int currentLayers = 0;
-        decimal? start = null;
-        // We iterate through the sorted events, keeping track of the current number of layers and the start of the current segment
-        foreach (var (coord, delta) in events)
-        {
-            // When we encounter a coordinate where the number of layers changes from 0 to positive or vice versa,
-            //we add a new segment to our result list.
-            if (start.HasValue && currentLayers > 0)
-            {
-                int strength = currentLayers >= 5 ? 5 : 1;
-                // If the previous segment has the same strength and end point, we update its end point to the current coordinate.
-                if (result.Count > 0 && result[result.Count - 1].strength == strength && result[result.Count - 1].end == start.Value)
-                {
-                    result[result.Count - 1] = (strength, result[result.Count - 1].start, coord);
-                }
-                else
-                {
-                    result.Add((strength, start.Value, coord));
-                }
-            }
+    public static List<int> AnalyzePaintLogs(double[] coords)
+    {
+        // Find the maximum coordinate to size the layers array
+        double maxCoord = GetMax(coords);
+        int size = (int)Math.Ceiling(maxCoord) + 1; // To ensure we cover up to maxCoord
+        int[] layers = new int[size];
 
-            currentLayers += delta;
-            if (currentLayers == 0)
+        // Naive painting algorithm to count layers
+        for (int coord_i = 0; coord_i < coords.Length; coord_i += 2)
+        {
+            double start = coords[coord_i];
+            double end = coords[coord_i + 1];
+            for (int paint_idx = (int)start; paint_idx < (int)end; paint_idx++)
             {
-                start = null;
-            }
-            else if (!start.HasValue)
-            {
-                start = coord;
+                layers[paint_idx]++;
             }
         }
 
-        return result;
-    }
+        // Prepare the result list
+        List<int> result = new List<int>();
+        bool previousPainted = false;
+        int? intervalStart = null;
 
-        public static void Main(string[] args)
-    {
-        // Example inputs
-        var testCases = new List<decimal[]>
+        for (int i = 0; i < layers.Length; i++)
         {
-            new decimal[] { 3, 10, 14, 20, 1, 5 },
-            new decimal[] { 1, 7, 1, 7, 1, 11, 1, 7, 1, 7 },
-            new decimal[] { 1.5m, 3.7m, 2.1m, 4.2m, 3.5m, 6.8m, 1.2m, 2.8m, 5.1m, 7.3m }
-        };
+            if (layers[i] > 0 && !previousPainted)
+            {
+                // Found new interval start
+                intervalStart = i;
+            }
 
-        foreach (var testCase in testCases)
-        {
-            Console.WriteLine("Input: " + string.Join(", ", testCase));
-            var result = Solution.UnpaintRoadLines(testCase);
-            Console.WriteLine("Output: " + FormatResult(result));
-            Console.WriteLine();
+            if (layers[i] == 0 && previousPainted && intervalStart.HasValue)
+            {
+                // Found current interval end
+                int strength = layers[intervalStart.Value] < 5 ? 1 : 5; // Light or strong solvent
+                result.Add(strength);
+                result.Add(intervalStart.Value);
+                result.Add(i); // End of interval
+                intervalStart = null; // Reset for next interval
+            }
+
+            // Remember previous cell state
+            previousPainted = layers[i] > 0;
         }
+
+        // Handle case where the last interval does not end at the maximum coordinate
+        if (previousPainted && intervalStart.HasValue)
+        {
+            int strength = layers[intervalStart.Value] < 5 ? 1 : 5; // Light or strong solvent
+            result.Add(strength);
+            result.Add(intervalStart.Value);
+            result.Add(size); // Ending at the maximum coordinate
+        }
+
+        return result; // Return the result as a list of integers
     }
 
-    private static string FormatResult(List<(int strength, decimal start, decimal end)> result)
+    private static double GetMax(double[] coords)
     {
-        return string.Join(", ", result.Select(r => $"({r.strength}, {r.start}, {r.end})"));
+        double max = 0;
+        foreach (double coord in coords)
+        {
+            if (coord > max)
+            {
+                max = coord;
+            }
+        }
+        return max;
     }
-    //     public void TestUnpaintRoadLines()
-    // {
-    //     // Arrange
-    //     var testCases = new List<(decimal[] input, List<(int strength, decimal start, decimal end)> expected)>
-    //     {
-    //         // Test case 1: Basic example from the problem description
-    //         (
-    //             new decimal[] { 3, 10, 14, 20, 1, 5 },
-    //             new List<(int, decimal, decimal)> { (1, 1, 10), (1, 14, 20) }
-    //         ),
-            
-    //         // Test case 2: Example with multiple layers
-    //         (
-    //             new decimal[] { 1, 7, 1, 7, 1, 11, 1, 7, 1, 7 },
-    //             new List<(int, decimal, decimal)> { (5, 1, 7), (1, 7, 11) }
-    //         ),
-            
-    //         // Test case 3: Decimal coordinates
-    //         (
-    //             new decimal[] { 1.5m, 3.7m, 2.1m, 4.2m, 3.5m, 6.8m, 1.2m, 2.8m, 5.1m, 7.3m },
-    //             new List<(int, decimal, decimal)> { (1, 1.2m, 7.3m) }
-    //         ),
-            
-    //         // Test case 4: No overlapping
-    //         (
-    //             new decimal[] { 1, 2, 3, 4, 5, 6 },
-    //             new List<(int, decimal, decimal)> { (1, 1, 2), (1, 3, 4), (1, 5, 6) }
-    //         ),
-            
-    //         // Test case 5: Complete overlap
-    //         (
-    //             new decimal[] { 1, 10, 1, 10, 1, 10, 1, 10, 1, 10 },
-    //             new List<(int, decimal, decimal)> { (5, 1, 10) }
-    //         )
-    //     };
 
-    //     // Act & Assert
-    //     foreach (var (input, expected) in testCases)
-    //     {
-    //         var result = Solution.UnpaintRoadLines(input);
-    //         Assert.Equal(expected, result);
-    //     }
-    // }
+    private static string FormatResult(List<int> result)
+    {
+        return string.Join(", ", result);
+    }
 }
