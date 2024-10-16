@@ -7,8 +7,10 @@ public class Solution
     public static List<(int strength, decimal start, decimal end)> UnpaintRoadLines(decimal[] coordinates)
     {
         var events = new List<(decimal coord, int delta)>();
+        // Sort events by coordinate and then by delta (to ensure the events with the same coordinate are processed in the same order)
         for (int i = 0; i < coordinates.Length; i += 2)
         {
+            //We create a list of events, where each event is a tuple of (coordinate, delta). Delta is 1 for start points and -1 for end points.
             events.Add((coordinates[i], 1));
             events.Add((coordinates[i + 1], -1));
         }
@@ -18,12 +20,15 @@ public class Solution
         var segments = new SortedDictionary<decimal, int>();
         int currentLayers = 0;
         decimal? start = null;
-
+        // We iterate through the sorted events, keeping track of the current number of layers and the start of the current segment
         foreach (var (coord, delta) in events)
         {
+            // When we encounter a coordinate where the number of layers changes from 0 to positive or vice versa,
+            //we add a new segment to our result list.
             if (start.HasValue && currentLayers > 0)
             {
                 int strength = currentLayers >= 5 ? 5 : 1;
+                // If the previous segment has the same strength and end point, we update its end point to the current coordinate.
                 if (result.Count > 0 && result[result.Count - 1].strength == strength && result[result.Count - 1].end == start.Value)
                 {
                     result[result.Count - 1] = (strength, result[result.Count - 1].start, coord);
