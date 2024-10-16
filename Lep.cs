@@ -141,6 +141,22 @@ class Solutio
             }
         }
 
+        private void DisplayBestArrangement()
+        {
+            Inventory tempInventory = new Inventory(inventory.Width, inventory.Height);
+            foreach (var (item, x, y) in bestArrangement)
+            {
+                tempInventory.PlaceItem(item, x, y);
+            }
+            tempInventory.Display();
+            Console.Write                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Line("Best Arrangement:");
+            foreach (var (item, x, y) in bestArrangement)
+            {
+                Console.WriteLine($"{item.Name} placed at (X: {x}, Y: {y}) - Value: {item.Value} gold");
+            }
+            Console.WriteLine();
+        }
+
     }
 
     // Checks for if an items vcan be placed i
