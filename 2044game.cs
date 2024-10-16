@@ -82,8 +82,7 @@ public class The2048Bonacci
     }
 
     // Slide and merge a row or column in the specified direction
-    private int[] SlideAndMergeLine(int[] line)
-    {
+    private int[] SlideAndMergeLine(int[] line){
         List<int> result = line.Where(num => num != 0).ToList();  // Remove zeros
         List<int> merged = new List<int>();
         bool skip = false;
@@ -222,5 +221,44 @@ public class The2048Bonacci
             // Randomly place a 1 or 2 (Fibonacci numbers)
             game_area[y][x] = fibonacciNumbers[rand.Next(2)];
         }
+    }
+
+
+    static void Main(string[] args)
+    {
+        int[][] initialGrid = {
+            new int[] {1, 0, 0, 0},
+            new int[] {1, 0,13, 0},
+            new int[] {0, 0, 0, 0},
+            new int[] {5, 0, 0, 0}
+        };
+
+        The2048Bonacci game = new The2048Bonacci(initialGrid);
+        
+        Console.WriteLine("Initial Grid:");
+        PrintGrid(game);
+
+        // Perform a DOWN move
+        game.Move(Direction.DOWN);
+        Console.WriteLine("After Moving Down:");
+        PrintGrid(game);
+
+        // Add a random tile
+        game.AddRandomTile();
+        Console.WriteLine("After Adding a Random Tile:");
+        PrintGrid(game);
+    }
+
+    // Helper method to print the grid
+    static void PrintGrid(The2048Bonacci game){
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                Console.Write(game.GetTile(x, y).ToString("D2") + " ");
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine();
     }
 }
