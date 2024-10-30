@@ -7,7 +7,8 @@ class Solution:
 
 
         if n1 > n2:
-            return 
+            return self.findMedianSortedArrays(nums1, nums2)
+        
         n = n1 + n2
         left = (n1 + n2 + 1) // 2
         low = 0
