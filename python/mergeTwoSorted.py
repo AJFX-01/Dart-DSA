@@ -36,7 +36,7 @@ class Solution:
                 if n % 2 == 1:
                     return max(l1, l2)
                 else:
-                    return max((l1, l2) + min(r1, r2)) /2.0
+                    return (max(l1, l2) + min(r1, r2)) / 2.0
             elif l1 > r2:
                 high = mid1 - 1
             else:
