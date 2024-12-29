@@ -27,7 +27,7 @@ class MinSwapWithTwoStack {
   List<int> closeStack = [];
   
   int minSwap (String s) {
-    // transcerse through the 
+    // transverse through the 
     for (int i = 0; i < s.length; i++) {
       if (s[i] == '[') {
         openStack.add(i);

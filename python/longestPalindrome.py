@@ -1,6 +1,6 @@
 class Solution:
     # Using brute force
-    def longestPalindrome(self, s: str) -> str:
+    def longestPalindrome1(self, s: str) -> str:
 
         n = len(s)
         if n <= 1:
@@ -18,7 +18,7 @@ class Solution:
         return max_str
     
     # Using Expand around the center
-    def longestPalindrome(self, s: str) -> str:
+    def longestPalindrome2(self, s: str) -> str:
         n = len(s)
 
         if (n <= 1):
@@ -45,6 +45,5 @@ class Solution:
     
 
     # Using Manacher's Algorithm
-    def longestPalindrome(self, s: str) -> str:
-        
-
+    # def longestPalindrome(self, s: str) -> str:
+    #     return s
