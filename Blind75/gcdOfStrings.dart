@@ -1,4 +1,8 @@
 class Gcdofstrings {
+// Compute the GCD of the lengths of str1 and str2.
+// Check if str1 + str2 equals str2 + str1 to verify a common pattern.
+// Return the substring of length gcdLength from either str1 or str2.
+// Complexity:
   String gcdOfStrings(String str1, String str2) {
     // Helper function to calculate the greatest divisor between two numbers
     int gcd(int a, int b) {
@@ -22,3 +26,4 @@ class Gcdofstrings {
     return str1.substring(0, gcdLength);
   }
 }
+
