@@ -7,3 +7,28 @@ The **Blind 75** list is a curated set of foundational coding problems that help
 ---
 
 ## Why Dart?
+---
+
+## Problem Categories  
+
+The Blind 75 problems are grouped into various categories. Below is the list of categories with links to the corresponding solutions:  
+
+1. **Array**  
+2. **String**  
+3. **Linked List**  
+4. **Binary Tree**  
+5. **Binary Search**  
+6. **Dynamic Programming**  
+7. **Graph**  
+8. **Heap**  
+9. **Intervals**  
+10. **Matrix**  
+11. **Backtracking**  
+12. **Greedy**  
+13. **Stack**  
+
+---
+
+## File Structure  
+
+Each problem has its own Dart file, named using the problem number and title for clarity. For example:
