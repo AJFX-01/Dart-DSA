@@ -25,7 +25,7 @@ public class Program
         return null; // This should never happen according to the problem statement 
     } 
 
-        public static int[] FindQuadrupletSumFast(int[] numbers, int target)
+    public static int[] FindQuadrupletSumFast(int[] numbers, int target)
     {
         Array.Sort(numbers);
         int n = numbers.Length;
