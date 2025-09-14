@@ -4,7 +4,7 @@ class Solution {
     print(nums);
     List<List<int>> res = [];
 
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.length - 2; i++) {
       //let skip duplicates
       if (i > 0 && nums[i] == nums[i - 1]) continue;
 
@@ -14,12 +14,8 @@ class Solution {
       while (j < k) {
         int sum = nums[i] + nums[j] + nums[k];
 
-        List<int> triplet = [nums[i], nums[j], nums[k]];
-        print(sum);
-        print(triplet);
-
         if (sum == 0) {
-          res.add(triplet);
+          res.add([nums[i], nums[j], nums[k]]);
           while(j < k && nums[j] == nums[j + 1]) j++;
           while(j < k && nums[k] == nums[k - 1]) k--;
           j++;
@@ -53,3 +49,34 @@ void main() {
   print(s.threeSum(nums));
   // print(s.isDup(nums, [0, 0, 0]));
 }
+
+// class Solution {
+//   List<List<int>> threeSum(List<int> nums) {
+//      List<List<int>> res = [];
+//   nums.sort();
+//   for(int i = 0 ; i<nums.length;i++){
+//     int a = nums[i];
+//     if(a>0) break;
+//     if(i>0 && nums[i] == nums[i-1]) continue;
+//     int l = i+1;
+//     int r = nums.length -1;
+//     while(l<r){
+//         int s = a + nums[l] + nums[r];
+//         if(s<0){
+//             l++;
+//         } else if(s>0){
+//             r--;
+//         } else {
+//             res.add([a,nums[l],nums[r]]);
+//             l++;
+//             r--;
+//             while (l < r && nums[l] == nums[l - 1]) {
+//           l++;
+//         }
+//         }
+//     }
+//   }
+//   return res;
+//   }
+  
+// }
