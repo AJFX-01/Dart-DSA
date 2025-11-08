@@ -2,6 +2,17 @@ class FindMedianSortedArrays {
 
   public findMedianSortedArraysBruteforce(nums1: number[], nums2: number[]): number {
 
+    nums1.push(...nums2);
+    nums1.sort((a, b) => a - b);
+
+    const mid = Math.floor(nums1.length / 2);
+
+    if(nums1.length % 2 === 0) {
+
+      return Math.floor((nums1[mid - 1] + nums1[mid]) / 2);
+    } else {
+      return nums1[mid];
+    }
 
   }
 
@@ -20,7 +31,7 @@ class FindMedianSortedArrays {
     while( left <= right) {
 
       const part1 = Math.floor((left + right) / 2);
-      const part2 = Math.floor( (n1 + n2 + 1) / 2) - part1;
+      const part2 = Math.floor((n1 + n2 + 1) / 2) - part1;
 
       const maxLeft1 = part1 === 0 ? -Infinity : nums1[part1 - 1];
       const maxLeft2 = part2 === 0 ? -Infinity : nums2[part2 - 1];
@@ -29,18 +40,17 @@ class FindMedianSortedArrays {
       const minRight2 = part2 === n2 ? Infinity : nums2[part2];
 
       if(maxLeft2 <= minRight1 && maxLeft1 <= minRight2) {
-
-        if((n1 + n2) % 2 !== 0) {
+        if((n1 + n2) % 2 !== 0) 
           return Math.max(maxLeft1, maxLeft2);
-        } else {
+        else 
           return (Math.max(maxLeft1, maxLeft2) + Math.min(minRight1, minRight2)) / 2
-        }
       } else if (maxLeft1 > minRight2) {
         right = part1 - 1;
       } else {
         left = part1 + 1;
       }
     }
+    return 0;
   }
     
 }
